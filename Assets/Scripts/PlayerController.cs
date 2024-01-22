@@ -107,6 +107,9 @@ public class PlayerController : MonoBehaviour
     // ========== HIDDEN ========== //
 
     // Aiflow (Inverse of plane's velocity supposing there's no wind)
+
+    private PhysicalObject physics;
+
     private Vector3 RawAirflow { get { return -rigidbody.velocity; } }
 
     // Flow facing the wings
@@ -138,6 +141,7 @@ public class PlayerController : MonoBehaviour
 
         rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
+        physics = GetComponent<PhysicalObject>();
 
         wheelsDeployed = true;
     }
