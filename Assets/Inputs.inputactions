@@ -9,7 +9,7 @@
                     "name": "Thruster",
                     "type": "Value",
                     "id": "d0401784-7ed8-4c36-bc84-9c618157c454",
-                    "expectedControlType": "Double",
+                    "expectedControlType": "Analog",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -18,7 +18,7 @@
                     "name": "Brake",
                     "type": "Value",
                     "id": "38746dc3-973c-47a0-9376-5167b4b85082",
-                    "expectedControlType": "Double",
+                    "expectedControlType": "Analog",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -86,7 +86,7 @@
                 {
                     "name": "",
                     "id": "bf24f09a-64f0-4152-b769-4cd4ef989f7c",
-                    "path": "<Keyboard>/s",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -97,7 +97,7 @@
                 {
                     "name": "",
                     "id": "2827e974-b123-4f24-87f5-527e59935b7b",
-                    "path": "<Keyboard>/w",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -115,6 +115,61 @@
                     "action": "PItch/Yaw",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "4634d64a-5592-4c1f-bc2c-a3594292789d",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PItch/Yaw",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "be1d2afd-1be0-461a-8dc5-e875abd523f7",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PItch/Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "e1dd2ada-8575-4a5c-84d7-147a4cce9e8e",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PItch/Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "c20d39c4-76f2-418c-9c2b-37c298d0c0bd",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PItch/Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "b1146e3a-780b-4cc7-9b11-ea22be67305e",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "PItch/Yaw",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 },
                 {
                     "name": "1D Axis",
@@ -139,12 +194,34 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "negative",
+                    "id": "c6a1aa3d-52d7-4264-809b-0b832cbdb1f6",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "positive",
                     "id": "1fdd71de-6327-42eb-8967-3d0986cd026d",
                     "path": "<DualShockGamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Roll",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "positive",
+                    "id": "faad6dbc-f67e-4673-a6cb-1d56080ebac0",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Roll",
                     "isComposite": false,
                     "isPartOfComposite": true

@@ -65,7 +65,7 @@ public class PhysicalSurface : MonoBehaviour
         if (parent.showSurfacesDuringPlaymode)
         {
             float lerp = Mathf.Abs(incidencePercentageOverNormal);
-            renderer.color = lerp <= 0.05f ? Color.green : Color.Lerp(Color.white, Color.red, lerp);
+            renderer.color = lerp <= 0.05f ? Color.gray : Color.Lerp(Color.white, Color.red, lerp);
 
             renderer.enabled = true;
         }
