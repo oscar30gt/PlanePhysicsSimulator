@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -230,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &28054808
 SpriteRenderer:
@@ -496,7 +496,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &270588572
 SpriteRenderer:
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &380023479
 SpriteRenderer:
@@ -904,7 +904,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &467474191
 SpriteRenderer:
@@ -1151,7 +1151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &667933683
 SpriteRenderer:
@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &901432839
 SpriteRenderer:
@@ -1864,13 +1864,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1081349668}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: -0.00000035762784}
   m_LocalPosition: {x: -0, y: 0, z: 6.303}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1144868984}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
 --- !u!114 &1081349670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1884,7 +1884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1081349671
 SpriteRenderer:
@@ -1984,7 +1984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1089247317
 SpriteRenderer:
@@ -2227,7 +2227,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1206530082
 SpriteRenderer:
@@ -2674,7 +2674,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1535426584
 SpriteRenderer:
@@ -2774,7 +2774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1555976652
 SpriteRenderer:
@@ -3100,7 +3100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1672922263
 SpriteRenderer:
@@ -3200,7 +3200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &1682753142
 SpriteRenderer:
@@ -4025,7 +4025,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &2016704664
 SpriteRenderer:
@@ -4125,7 +4125,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 1
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &2058920438
 SpriteRenderer:
@@ -4257,7 +4257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dynamic: 0
-  parent: {fileID: 0}
+  parent: {fileID: 1130298077842364055}
   sprite: {fileID: 21300000, guid: 19d94248c35564f44bd9969ce4799fc8, type: 3}
 --- !u!212 &2080161083
 SpriteRenderer:
@@ -4656,7 +4656,7 @@ MonoBehaviour:
   directionCheck: 0.075
   invertX: 0
   invertY: 1
-  autoWheels: 1
+  autoWheels: 0
   deployAtHeight: 20
   lerp: 1
   lerpSpeed: 25

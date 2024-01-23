@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -19,6 +20,8 @@ public class PhysicalSurface : MonoBehaviour
 
     private new SpriteRenderer renderer;
 
+    private TextMeshPro details;
+
     private void OnValidate()
     {
         renderer = GetComponent<SpriteRenderer>();
@@ -32,7 +35,20 @@ public class PhysicalSurface : MonoBehaviour
         renderer = GetComponent<SpriteRenderer>();
         deltaPosition = Vector3.zero;
         lastFramePos = transform.position;
+
+#if UNITY_EDITOR
+        if (parent?.showSurfacesDuringPlaymode ?? false)
+        {
+            GameObject detailsInfo = new("Info");
+            details = detailsInfo.AddComponent<TextMeshPro>();
+            details.fontSize = 6;
+            details.alignment = TextAlignmentOptions.Center;
+
+            details.gameObject.layer = 20;
+            details.gameObject.transform.SetParent(transform, false);
+        }
     }
+#endif
 
     // FixedUpdate used for physics-related tasks
     void FixedUpdate()
@@ -65,13 +81,10 @@ public class PhysicalSurface : MonoBehaviour
         if (parent.showSurfacesDuringPlaymode)
         {
             float lerp = Mathf.Abs(incidencePercentageOverNormal);
-            renderer.color = lerp <= 0.05f ? Color.gray : Color.Lerp(Color.white, Color.red, lerp);
-
-            renderer.enabled = true;
-        }
-        else
-        {
-            renderer.enabled = false;
+            renderer.color = lerp <= 0.05f ? Color.clear : Color.Lerp(Color.white, Color.red, lerp);
+            details.text = incidencePercentageOverNormal.ToString("0.00");
+            details.gameObject.transform.LookAt(Camera.allCameras[0].transform);
+            details.transform.Rotate(0, 180, 0);
         }
 #endif
 
