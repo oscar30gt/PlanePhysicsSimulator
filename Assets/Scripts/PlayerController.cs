@@ -1,5 +1,4 @@
 using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,7 +19,6 @@ public class Flaps
 {
     public Transform Right;
     public Transform Left;
-    public float LiftCoefficientModifier;
     public float MaxPitch;
     public float BrakeExtraPitch;
 }
@@ -30,7 +28,6 @@ public class Ailerons
 {
     public Transform Right;
     public Transform Left;
-    public float Force;
     public float MaxPitch;
 }
 
@@ -39,8 +36,6 @@ public class Elevators
 {
     public Transform Right;
     public Transform Left;
-    public float Position;
-    public float Force;
     public float MaxPitch;
     public float TurnExtraPitch;
 }
@@ -50,8 +45,6 @@ public class Rudders
 {
     public Transform Right;
     public Transform Left;
-    public float Position;
-    public float Force;
     public float MaxPitch;
     [Range(0, 1), Tooltip("On a curve, the outer rudder just tilts a percentage of the other rudder's angle")] public float outerRudderPitchPercentage;
 }
@@ -65,20 +58,14 @@ public class PlayerController : MonoBehaviour
     [Header("Speed")]
     [SerializeField, Tooltip("Measured in meters/second. Min speed the plane has to reach to keep flying horizontally without flaps")] private float minSpeedToCounterGravity;
 
-    [Header("Longitudinal Forces")]
-    [SerializeField] private float thrustForce;
-    [SerializeField, Range(0, 1)] private float dragCoefficient;
-    [SerializeField] private float brakeDragMultiplier;
-    [SerializeField, Range(0.05f, 1)] private float directionCheck;
-
     [Header("Controller")]
     [SerializeField] private bool invertX;
     [SerializeField] private bool invertY;
     [Space]
-    [SerializeField] private bool autoWheels;
+    [SerializeField] private bool automaticWheelDeploy;
     [SerializeField, Min(0)] private float deployAtHeight;
 
-    [Header("Control Surfaces (Steering)")]
+    [Header("Control Surfaces (Visuals)")]
     [SerializeField] private bool lerp;
     [SerializeField, Min(1)] private float lerpSpeed;
     [Space]
@@ -99,37 +86,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField, Tooltip("Gameobject with every thruster particle systems insided")] private Thrusters thrusters;
 
     [Header("UI")]
-    [SerializeField] private TextMeshProUGUI speedometer;
-    [SerializeField] private TextMeshProUGUI detailsPane;
-    [SerializeField] private AttackAngleChart angleChart;
-
+    [SerializeField] private Overlay overlay;
 
     // ========== HIDDEN ========== //
 
-    // Aiflow (Inverse of plane's velocity supposing there's no wind)
-
-    private PhysicalObject physics;
-
-    private Vector3 RawAirflow { get { return -rigidbody.velocity; } }
-
-    // Flow facing the wings
-    private Vector3 LocalAirflow { get { return rigidbody.transform.InverseTransformDirection(RawAirflow); } }
-    public float FacingAirflow { get { return LocalAirflow.z; } }
-
-    private float wingsLiftCoefficient;
-
-    [HideInInspector] public new Rigidbody rigidbody;
+    [HideInInspector] public AerodynamicObject physics;
     [HideInInspector] public Animator animator;
 
     private bool wheelsDeployed;
-
-    // Lift force is what keeps the plane flying, and always points upwards (on the local coordinates)
-    private float lift;
-
-    private float thrust;
-    private float drag;
-
-    private float attackAngle;
 
     #endregion
 
@@ -139,21 +103,14 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
 
-        rigidbody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
-        physics = GetComponent<PhysicalObject>();
+        physics = GetComponent<AerodynamicObject>();
 
         wheelsDeployed = true;
     }
 
     void Update()
     {
-        ApplyThrustAndDrag();
-        ApplyLift();
-
-        ApplyPitch();
-        ApplyRoll();
-
         MoveFlaps();
         MoveAilerons();
         MoveElevators();
@@ -164,15 +121,20 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!autoWheels) return;
+        if (automaticWheelDeploy)
+        {
+            CheckWheels();
+        }
+    }
 
-        LayerMask mask = LayerMask.GetMask("Terrain");
-
-        Ray ray = new(transform.position, Vector3.down);
-        bool terrain = Physics.Raycast(ray, deployAtHeight, mask);
-
-        wheelsDeployed = terrain;
-        animator.SetBool("Wheels", wheelsDeployed);
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("CheckPoint"))
+        {
+            other.gameObject.SetActive(false);
+            int index = other.transform.GetSiblingIndex();
+            other.transform.parent.GetChild(index + 1)?.gameObject.SetActive(true);
+        }
     }
 
     #endregion
@@ -196,6 +158,8 @@ public class PlayerController : MonoBehaviour
 
         PlaneInput.Yaw = invertX ? -direction.x : direction.x;
         PlaneInput.Pitch = invertY ? direction.y : -direction.y;
+
+        thrusters.SetAngle(-PlaneInput.Pitch);
     }
 
     public void OnRoll(InputAction.CallbackContext context)
@@ -206,56 +170,10 @@ public class PlayerController : MonoBehaviour
     public void OnDeployWheels(InputAction.CallbackContext context)
     {
         bool pressStart = context.ReadValue<float>() == 1;
-        if (!pressStart || autoWheels) return;
+        if (!pressStart || automaticWheelDeploy) return;
 
         wheelsDeployed = !wheelsDeployed;
         animator.SetBool("Wheels", wheelsDeployed);
-    }
-
-    #endregion
-
-    #region PlanePhysics
-
-    private void ApplyThrustAndDrag()
-    {
-        thrust = PlaneInput.ThrusterPower * thrustForce;
-        rigidbody.AddForce(thrust * Time.deltaTime * transform.forward, ForceMode.Acceleration);
-
-        // A greater attack angle will produce the plane to have more resistance to the air
-        attackAngle = Mathf.Abs(90 - Vector3.Angle(transform.up, rigidbody.velocity)) * directionCheck;
-
-        drag = (1 + PlaneInput.BrakePower * brakeDragMultiplier) * FacingAirflow * dragCoefficient;
-        rigidbody.AddForce(drag * attackAngle * Time.deltaTime * rigidbody.velocity, ForceMode.Acceleration);
-    }
-
-    /// <summary>
-    /// Calculates the lift the plane speed produces in order to keep the plane in the air.
-    /// </summary>
-    private void ApplyLift()
-    {   
-        lift = Physics.gravity.magnitude * wingsLiftCoefficient * Mathf.Clamp01(-FacingAirflow / minSpeedToCounterGravity);
-
-        rigidbody.AddForce(lift * Time.deltaTime * transform.up, ForceMode.VelocityChange);
-    }
-
-    /// <summary>
-    /// Pitch torque is applied from the back of the plane as a downwards force.
-    /// </summary>
-    private void ApplyPitch()
-    {
-        Vector3 force = elevators.Force * Time.deltaTime * PlaneInput.Pitch * transform.up;
-        Vector3 position = transform.position + transform.forward * elevators.Position;
-
-        float speedMultiplier = -FacingAirflow / minSpeedToCounterGravity;
-        rigidbody.AddForceAtPosition(force * speedMultiplier, position, ForceMode.VelocityChange);
-    }
-
-    private void ApplyRoll()
-    {
-        Vector3 torque = ailerons.Force * Time.deltaTime * PlaneInput.Roll * transform.forward;
-
-        float speedMultiplier = -FacingAirflow / minSpeedToCounterGravity;
-        rigidbody.AddTorque(torque * speedMultiplier, ForceMode.VelocityChange);
     }
 
     #endregion
@@ -272,7 +190,6 @@ public class PlayerController : MonoBehaviour
         flaps.Right.transform.localEulerAngles = new Vector3(flaps.Right.transform.localEulerAngles.x, flaps.Right.transform.localEulerAngles.y, animatedAngle);
 
         float flapsPositionFactor = realAngle / flaps.MaxPitch;
-        wingsLiftCoefficient = 1 + flapsPositionFactor * flaps.LiftCoefficientModifier;
     }
 
     void MoveAilerons()
@@ -313,34 +230,24 @@ public class PlayerController : MonoBehaviour
 
     #endregion
 
+    private void CheckWheels()
+    {
+        LayerMask mask = LayerMask.GetMask("Terrain");
+
+        Ray ray = new(transform.position, Vector3.down);
+        bool terrain = Physics.Raycast(ray, deployAtHeight, mask);
+
+        wheelsDeployed = terrain;
+        animator.SetBool("Wheels", wheelsDeployed);
+    }
+    
     private void UpdateUI()
     {
-        speedometer.text = $"{Mathf.Round(FacingAirflow * -3.6f)} Km/h";
-        detailsPane.text =
-            $"Total: {rigidbody.velocity.magnitude * 3.6f:0.00} Km/h<br>" +
-            $"Raw: {-LocalAirflow * 3.6f:0.00} Km/h<br><br>" +
-            $"Wings lift coefficient: {wingsLiftCoefficient:0.00} <br>" +
-            $"Total lift force: {lift:0.00} <br>" +
-            $"Thrust: {thrust:0.00} <br>" +
-            $"Drag: {drag:0.00} <br>" +
-            $"Angle: {attackAngle:0.00}";
-        angleChart.SetAngle(transform.forward);
-    }
+        overlay.UpdateSpeedBar(physics.velocity.magnitude / 40);
+        overlay.UpdateThrustChart(PlaneInput.ThrusterPower);
 
-    private Vector3 ClampVector(Vector3 vector3, float min, float max)
-    {
-        if (min > max) return Vector3.zero;
-
-        if (vector3.magnitude > max)
-        {
-            return vector3.normalized * max;
-        }
-
-        if (vector3.magnitude < min)
-        {
-            return vector3.normalized * min;
-        }
-
-        return vector3;
+        Vector3 dir = transform.forward;
+        float tilt = Vector3.Angle(new Vector3(dir.x, 0, dir.z), dir);
+        overlay.UpdateTiltChart(tilt / 90);
     }
 }

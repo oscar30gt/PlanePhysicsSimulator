@@ -35,7 +35,7 @@ public class CameraManager : MonoBehaviour
 
         transform.position = plane.transform.position + positionOffset;
 
-        float lerp = -plane.FacingAirflow / returnSlowness;
+        float lerp = plane.physics.velocity.magnitude / returnSlowness;
         yawOffset = Mathf.Lerp(yawOffset, 0, Time.deltaTime * lerp);
 
         transform.localEulerAngles = new Vector3(

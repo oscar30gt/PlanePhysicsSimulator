@@ -2,24 +2,54 @@ using UnityEngine;
 
 public class Thrusters : MonoBehaviour
 {
-    [SerializeField] private float maxPower;
+    [Header("Power")]
+    [SerializeField] private float thrustForce;
     [SerializeField] private float maxOpening;
-    [Space]
-    [SerializeField] private ParticleSystem[] particles;
-    [SerializeField] private Transform top;
-    [SerializeField] private Transform bottom;
 
-    public void SetPower(float percentage)
+    [Header("Vectorial Thrust")] 
+    [SerializeField] private float maxAngle;
+    [SerializeField] private AerodynamicObject parent;
+
+    [Header("Visuals")]
+    [SerializeField] private float maxParticles;
+    [SerializeField] private Transform particlesParent;
+    [SerializeField] private ParticleSystem[] particles;
+    [Space]
+    [SerializeField] private Transform topCover;
+    [SerializeField] private Transform bottomCover;
+
+    private float Power;
+    private float Angle;
+
+    void FixedUpdate()
     {
-        percentage = Mathf.Clamp01(percentage);
+        parent.AddForceAtPosition(Power * thrustForce * particlesParent.forward, particlesParent.position, ForceMode.Acceleration);
+    }
+
+    public void SetAngle() { SetAngle(Angle); }
+    public void SetAngle(float angle)
+    {
+        Angle = Mathf.Clamp(angle, -1, 1);
+        Angle *= maxAngle;
+        
+        particlesParent.localEulerAngles = new(angle, 0, 0);
+
+        float opening = maxOpening * Power;
+        topCover.localEulerAngles = new(Angle - opening, topCover.localEulerAngles.y, topCover.localEulerAngles.z);
+        bottomCover.localEulerAngles = new(Angle + opening, topCover.localEulerAngles.y, topCover.localEulerAngles.z);
+    }
+
+    public void SetPower(float power)
+    {
+        Power = Mathf.Clamp01(power);
 
         // Sets the power (Initial speed) of each thruster
         foreach (ParticleSystem thruster in particles)
         {
             ParticleSystem.EmissionModule main = thruster.emission;
-            main.rateOverTime = percentage * maxPower;
+            main.rateOverTime = Power * maxParticles;
 
-            if (percentage == 0)
+            if (Power == 0)
             {
                 thruster.Stop();
                 continue;
@@ -28,8 +58,6 @@ public class Thrusters : MonoBehaviour
             thruster.Play();
         }
 
-        float angle = maxOpening * percentage;
-        top.localEulerAngles = new Vector3(angle, top.localEulerAngles.y, top.localEulerAngles.z);
-        bottom.localEulerAngles = new Vector3(-angle, top.localEulerAngles.y, top.localEulerAngles.z);
+        SetAngle();
     }
 }
