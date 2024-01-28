@@ -18,12 +18,31 @@ public static class Meteorology
 [RequireComponent(typeof(Rigidbody))]
 public class AerodynamicObject : MonoBehaviour
 {
+    // ========== INSPECTOR ========== //
+
     public bool displaySurfacesDuringPlaymode;
-    [Space]
-    public float defaultForce;
+    [Space] public float defaultForce;
+
+    // ========== HIDDEN ========== //
 
     private new Rigidbody rigidbody;
-    public Vector3 velocity { get { return rigidbody.velocity; } }
+
+    public Vector3 velocity 
+    {
+        get 
+        { 
+            return rigidbody.velocity; 
+        } 
+        private set { rigidbody.velocity = value; }
+    }
+
+    public float SpeedPercent 
+    { 
+        get
+        {
+            return velocity.magnitude / 40;
+        } 
+    }
 
     public Vector3 FacingAirflow 
     {
@@ -31,7 +50,6 @@ public class AerodynamicObject : MonoBehaviour
         {
             return -rigidbody.velocity + Meteorology.WindVelocity;
         }
-        private set { }
     }
 
     // Start is called before the first frame update
@@ -50,5 +68,10 @@ public class AerodynamicObject : MonoBehaviour
     public void AddForceAtPosition(Vector3 force, Vector3 position)
     {
         AddForceAtPosition(force, position, ForceMode.Force);
+    }
+
+    public void SetVelocity(Vector3 velocity)
+    {
+        rigidbody.velocity = velocity;
     }
 }

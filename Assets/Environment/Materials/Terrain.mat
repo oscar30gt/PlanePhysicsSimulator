@@ -72,6 +72,22 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_0a180a3d1b0b4b778905b83a9e967a4e_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 65c50b065f264b042a12153fb6454aa5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_38efb002f106435b8f57935c95d71c6d_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: e318f31bebce62d48a648da3f8ba56c9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_418e1f80769147108a849194e97b885d_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: ffa01093856b873448237de84289ee85, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_bc89b97568f84db88de849baf47ac754_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 7e35234e281d141418972228ee38415e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BUILTIN_QueueControl: 0
@@ -85,16 +101,20 @@ Material:
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
+    - _Mud_Height: 1.09
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Smoothness: 3.6
+    - _Smoothness: 4.18
     - _SmoothnessTextureChannel: 0
+    - _Snow_Height: 88.8
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _Steep_Terrain_Threshold: 0.644
     - _Threshold: 0.722
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _Texture_Scale: {r: 20, g: 20, b: 0, a: 0}
   m_BuildTextureStacks: []

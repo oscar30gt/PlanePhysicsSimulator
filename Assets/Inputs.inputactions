@@ -185,7 +185,7 @@
                 {
                     "name": "negative",
                     "id": "5af90100-5111-41ab-983b-c3972a174e30",
-                    "path": "<DualShockGamepad>/leftShoulder",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -207,7 +207,7 @@
                 {
                     "name": "positive",
                     "id": "1fdd71de-6327-42eb-8967-3d0986cd026d",
-                    "path": "<DualShockGamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -233,6 +233,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Camera",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b1c1d0d8-ef35-44f0-b44b-e5407a7e9f13",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Camera",
                     "isComposite": false,
                     "isPartOfComposite": false

@@ -8,6 +8,22 @@ public struct BooleanVector3
     public bool x;
     public bool y;
     public bool z;
+
+    public readonly Vector3 vector
+    {
+        get
+        {
+            return new(x ? 1 : 0, y ? 1 : 0, z ? 1 : 0);
+        }
+    }
+
+    public readonly Vector3 inverseVector
+    {
+        get
+        {
+            return new(x ? 0 : 1, y ? 0 : 1, z ? 0 : 1);
+        }
+    }
 }
 
 /// <summary>
@@ -54,6 +70,11 @@ public class AerodynamicSurface : MonoBehaviour
         surfaceRenderer.color = dynamic ? Color.cyan : Color.blue;
     }
 
+    private void OnEnable()
+    {
+        lastFramePos = transform.position;
+    }
+
     void Start()
     {
         surfaceRenderer = GetComponent<SpriteRenderer>();
@@ -79,6 +100,7 @@ public class AerodynamicSurface : MonoBehaviour
     // FixedUpdate is used for physics-related tasks
     void FixedUpdate()
     {
+        // The surface must belong to a parent, it can't work itself
         if (parent == null) return;
         
         deltaPosition = transform.position - lastFramePos;
@@ -108,7 +130,7 @@ public class AerodynamicSurface : MonoBehaviour
 
         // Angle between the facing air and the surface's normal
         float angle = Vector3.Angle(normal, -actualDisplacement);
-        float incidencePercentageOverNormal = Mathf.Cos(angle * Mathf.Deg2Rad);
+        float incidencePercentageOverNormal = Mathf.Cos(angle * Mathf.Deg2Rad);  // [0, 1] range
 
 #if UNITY_EDITOR
         // Visually shows how much force is the surface supporting
@@ -126,6 +148,8 @@ public class AerodynamicSurface : MonoBehaviour
         {
             surfaceRenderer.color = Color.clear;
         }
+#else
+            surfaceRenderer.color = Color.clear;
 #endif
         /*
          * Force performed over the normal
@@ -141,15 +165,20 @@ public class AerodynamicSurface : MonoBehaviour
         return normalForce;
     }
 
+
+    /// <summary>
+    /// Adds a torque to the object from the surface's position, following it normal's direction.
+    /// </summary>
+    /// <param name="forceMagnitude"> Magnitude of the force to apply over the normal</param>
     private void ApplyForceOverObject(float forceMagnitude)
     {
         Vector3 forceDirection = transform.forward;
 
         Vector3 objectForce = parent.transform.InverseTransformVector(forceDirection);
         objectForce = new(
-            clampAxes.x ? 0 : objectForce.x,
-            clampAxes.y ? 0 : objectForce.y, 
-            clampAxes.z ? 0 : objectForce.z
+            clampAxes.inverseVector.x * objectForce.x,
+            clampAxes.inverseVector.y * objectForce.y, 
+            clampAxes.inverseVector.z * objectForce.z
             );
 
         forceDirection = parent.transform.TransformVector(objectForce);

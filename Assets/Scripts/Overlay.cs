@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,6 +8,8 @@ public class Overlay : MonoBehaviour
     [Space]
     [SerializeField] private Image rightBarFill;
     [SerializeField] private Image leftBarFill;
+    [Space]
+    [SerializeField] private Transform center;
 
     private RectTransform rectTransform;
 
@@ -19,7 +19,7 @@ public class Overlay : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
 
-        UpdateDragBar(0);
+        UpdateHeightBar(0);
         UpdateSpeedBar(0);
         UpdateThrustChart(0);
         UpdateTiltChart(0);
@@ -30,7 +30,7 @@ public class Overlay : MonoBehaviour
         rightBarFill.fillAmount = thrust;
     }
 
-    public void UpdateDragBar(float drag)
+    public void UpdateHeightBar(float drag)
     {
         leftBarFill.fillAmount = drag;
     }
@@ -40,8 +40,13 @@ public class Overlay : MonoBehaviour
         rightArrow.transform.localPosition = new(0, rectTransform.sizeDelta.y * thrust - rectTransform.sizeDelta.y / 2 , 0);
     }
 
-    public void UpdateTiltChart(float inclination)
+    public void UpdateTiltChart(float tilt)
     {
-        leftArrow.transform.localPosition = new(0, rectTransform.sizeDelta.y * inclination - rectTransform.sizeDelta.y / 2, 0);
+        leftArrow.transform.localPosition = new(0, rectTransform.sizeDelta.y * tilt - rectTransform.sizeDelta.y / 2, 0);
+    }
+
+    public void UpdateInclinationChart(float inclination)
+    {
+        center.transform.eulerAngles = new(0, 0, inclination);
     }
 }
